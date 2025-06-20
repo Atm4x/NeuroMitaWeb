@@ -9,6 +9,12 @@
     }
   },
   "lang": "EN",
+  "header": {
+    "nav": {
+      "home": "Home",
+      "prompts": "Prompts"
+    }
+  },
   "hero": {
     "title": "NeuroMita",
     "accentTitle": "NEUROMITA",
@@ -40,8 +46,8 @@
       { "name": "_atm4x", "role": "Local Voice-over" },
       { "name": "JPAV", "role": "Animations" },
       { "name": "Feanor & Tkost", "role": "Kind Mita" },
-      { "name": "Josefummi", "role": "ShortHaired Mita" },
-      { "name": "gad991", "role": "Cappie" },
+      { "name": "Josefummi", "role": "Short-Haired" },
+      { "name": "gad991", "role": "Cap" },
       { "name": "depikoov", "role": "Mila" },
       { "name": "スノー", "role": "CrazyMitaBot" }
     ]
@@ -55,5 +61,36 @@
   "footer": {
     "copyright": "© 2025 NeuroMita | Python & C# MelonMod",
     "docsLink": "Documentation and source code on GitHub"
+  },
+  "promptsPage": {
+    "title": "Prompt Catalog",
+    "loading": "Loading prompts...",
+    "all": "All",
+    "characters": [
+      { "id": "crazy", "name": "Crazy Mita" },
+      { "id": "shorthair", "name": "Shorthair Mita" },
+      { "id": "cappie", "name": "Cappie" },
+      { "id": "kind", "name": "Kind Mita" },
+      { "id": "mila", "name": "Mila" },
+      { "id": "sleepy", "name": "Sleepy Mita" },
+      { "id": "creepy", "name": "Creepy Mita" }
+    ],
+    "card": {
+      "creator": "Creator",
+      "size": "Size",
+      "tokens": "tokens",
+      "download": "Download",
+      "details": "Details",
+      "lastUpdated": "Updated"
+    },
+    "modal": {
+      "aboutTitle": "About",
+      "metaTitle": "Info",
+      "uploaded": "Uploaded",
+      "versionHistory": "Versions",
+      "version": "Version",
+      "date": "Date",
+      "changes": "Changes"
+    }
   }
 }

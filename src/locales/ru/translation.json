@@ -9,6 +9,12 @@
     }
   },
   "lang": "RU",
+  "header": {
+    "nav": {
+      "home": "Главная",
+      "prompts": "Промпты"
+    }
+  },
   "hero": {
     "title": "НейроМита",
     "accentTitle": "НЕЙРОМИТА",
@@ -55,5 +61,36 @@
   "footer": {
     "copyright": "© 2025 НейроМита | Python & C# MelonMod",
     "docsLink": "Документация и исходный код на GitHub"
+  },
+  "promptsPage": {
+    "title": "Каталог Промптов",
+    "loading": "Загрузка промптов...",
+    "all": "Все",
+    "characters": [
+      { "id": "crazy", "name": "Безумная Мита" },
+      { "id": "shorthair", "name": "Коротковолосая Мита" },
+      { "id": "cappie", "name": "Кепочка" },
+      { "id": "kind", "name": "Добрая Мита" },
+      { "id": "mila", "name": "Мила" },
+      { "id": "sleepy", "name": "Сонная Мита" },
+      { "id": "creepy", "name": "Уродливая Мита" }
+    ],
+    "card": {
+      "creator": "Создатель",
+      "size": "Размер",
+      "tokens": "токенов",
+      "download": "Скачать",
+      "details": "Подробнее",
+      "lastUpdated": "Обновлено"
+    },
+    "modal": {
+      "aboutTitle": "О промпте",
+      "metaTitle": "Информация",
+      "uploaded": "Загружен",
+      "versionHistory": "История версий",
+      "version": "Версия",
+      "date": "Дата",
+      "changes": "Изменения"
+    }
   }
 }

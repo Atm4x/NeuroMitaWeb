@@ -1,14 +1,17 @@
 import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
-import LanguageSwitcher from './components/LanguageSwitcher';
+import PromptsPage from './pages/PromptsPage';
 
 function App() {
   return (
-    <>
-      <LanguageSwitcher />
-      <div className="noise"></div>
-      <HomePage />
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="prompts" element={<PromptsPage />} />
+      </Route>
+    </Routes>
   );
 }
 
