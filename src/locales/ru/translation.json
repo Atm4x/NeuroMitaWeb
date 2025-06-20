@@ -1,0 +1,59 @@
+{
+  "config": {
+    "version": "v0.011",
+    "links": {
+      "download": "https://github.com/VinerX/NeuroMita/releases/download/v0.011/NeuroMita.0.011.MitaWorld.7z",
+      "discord": "https://discord.gg/Tu5MPFxM4P",
+      "github": "https://github.com/VinerX/NeuroMita",
+      "boosty": "https://boosty.to/vinerx"
+    }
+  },
+  "lang": "RU",
+  "hero": {
+    "title": "НейроМита",
+    "accentTitle": "НЕЙРОМИТА",
+    "subtitle": "Общайся с Митами через нейросети",
+    "buttons": {
+      "download": "Скачать",
+      "discord": "Discord",
+      "github": "GitHub"
+    }
+  },
+  "features": {
+    "title": "Возможности",
+    "items": [
+      { "title": "Продвинутый AI", "description": "Gemini, DeepSeek, Grok и другие топовые модели для реалистичного общения с персонажами." },
+      { "title": "Голосовая озвучка", "description": "Telegram боты или локальная озвучка - выбирайте удобный способ оживить диалоги." },
+      { "title": "Гибкая настройка", "description": "Бесплатные и платные API, настройка промптов, выбор моделей - всё под вашим контролем." },
+      { "title": "Простая установка", "description": "MelonLoader, пара файлов и готово. Нажми Tab чтобы писать, Enter чтобы отправить." },
+      { "title": "Разные персонажи", "description": "Добрая Мита, Коротковолосая, Кепка, Мила - у каждой свой характер и стиль общения." },
+      { "title": "Open Source", "description": "Python + C# код открыт. Присоединяйтесь к разработке и улучшайте мод вместе с нами." }
+    ],
+    "warning": "<strong>Требуются разработчики!</strong><br/>C# Unity программисты и помощники аниматора - пишите в Discord: <strong>vinerx</strong>"
+  },
+  "team": {
+    "title": "Команда",
+    "members": [
+      { "name": "VinerX", "role": "Создатель проекта" },
+      { "name": "vlad2830", "role": "C# и Python" },
+      { "name": "Nelxi", "role": "Голосовой ввод" },
+      { "name": "_atm4x", "role": "Локальная озвучка" },
+      { "name": "JPAV", "role": "Анимации" },
+      { "name": "Feanor & Tkost", "role": "Добрая Мита" },
+      { "name": "Josefummi", "role": "Коротковолосая" },
+      { "name": "gad991", "role": "Кепка" },
+      { "name": "depikoov", "role": "Мила" },
+      { "name": "スノー", "role": "CrazyMitaBot" }
+    ]
+  },
+  "support": {
+    "title": "Поддержать проект",
+    "subtitle": "Помогите развитию НейроМиты",
+    "boostyButton": "Boosty VinerX",
+    "cryptoTitle": "Криптовалюта"
+  },
+  "footer": {
+    "copyright": "© 2025 НейроМита | Python & C# MelonMod",
+    "docsLink": "Документация и исходный код на GitHub"
+  }
+}

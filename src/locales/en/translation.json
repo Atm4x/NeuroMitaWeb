@@ -1,0 +1,59 @@
+{
+  "config": {
+    "version": "v0.011",
+    "links": {
+      "download": "https://github.com/VinerX/NeuroMita/releases/download/v0.011/NeuroMita.0.011.MitaWorld.7z",
+      "discord": "https://discord.gg/Tu5MPFxM4P",
+      "github": "https://github.com/VinerX/NeuroMita",
+      "boosty": "https://boosty.to/vinerx"
+    }
+  },
+  "lang": "EN",
+  "hero": {
+    "title": "NeuroMita",
+    "accentTitle": "NEUROMITA",
+    "subtitle": "Chat with Mitas through neural networks",
+    "buttons": {
+      "download": "Download",
+      "discord": "Discord",
+      "github": "GitHub"
+    }
+  },
+  "features": {
+    "title": "Features",
+    "items": [
+      { "title": "Advanced AI", "description": "Gemini, DeepSeek, Grok and other top models for realistic communication with characters." },
+      { "title": "Voice Dubbing", "description": "Telegram bots or local voice synthesis - choose a convenient way to bring dialogues to life." },
+      { "title": "Flexible Setup", "description": "Free and paid APIs, prompt customization, model selection - everything is under your control." },
+      { "title": "Easy Installation", "description": "MelonLoader, a couple of files, and you're ready. Press Tab to type, Enter to send." },
+      { "title": "Diverse Characters", "description": "Kind Mita, Short-Haired, Cap, Mila - each has her own character and communication style." },
+      { "title": "Open Source", "description": "Python + C# code is open. Join the development and improve the mod with us." }
+    ],
+    "warning": "<strong>Developers wanted!</strong><br/>C# Unity programmers and animator assistants - contact on Discord: <strong>vinerx</strong>"
+  },
+  "team": {
+    "title": "The Team",
+    "members": [
+      { "name": "VinerX", "role": "Project Creator" },
+      { "name": "vlad2830", "role": "C# and Python" },
+      { "name": "Nelxi", "role": "Voice Input" },
+      { "name": "_atm4x", "role": "Local Voice-over" },
+      { "name": "JPAV", "role": "Animations" },
+      { "name": "Feanor & Tkost", "role": "Kind Mita" },
+      { "name": "Josefummi", "role": "ShortHaired Mita" },
+      { "name": "gad991", "role": "Cappie" },
+      { "name": "depikoov", "role": "Mila" },
+      { "name": "スノー", "role": "CrazyMitaBot" }
+    ]
+  },
+  "support": {
+    "title": "Support the Project",
+    "subtitle": "Help the development of NeuroMita",
+    "boostyButton": "Boosty VinerX",
+    "cryptoTitle": "Cryptocurrency"
+  },
+  "footer": {
+    "copyright": "© 2025 NeuroMita | Python & C# MelonMod",
+    "docsLink": "Documentation and source code on GitHub"
+  }
+}
