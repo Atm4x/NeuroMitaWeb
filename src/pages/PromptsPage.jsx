@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { getPrompts } from '../api/promptsApi';
 import PromptCard from '../components/PromptCard';
 import PromptModal from '../components/PromptModal';
-import '../styles/promptspage.css';
+import '../styles/PromptsPage.css';
 
 const PromptsPage = () => {
   const { t } = useTranslation();
