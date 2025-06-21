@@ -1,12 +1,28 @@
+// src/components/PromptCard.jsx
+
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import DownloadIcon from './icons/DownloadIcon';
 
+// Функция для создания ссылки для установщика
+const createInstallerLink = (prompt, version) => {
+  const fakeDownloadUrl = `https://neuromita.test/downloads/${prompt.id}/${version.version}.zip`;
+  const params = new URLSearchParams({
+    promptId: prompt.id,
+    promptTitle: prompt.title,
+    version: version.version,
+    creator: prompt.creator,
+    downloadUrl: fakeDownloadUrl // Используем фейковую ссылку для теста
+  });
+  return `neuromita-installer://install?${params.toString()}`;
+};
+
 const PromptCard = ({ prompt, characterName, onOpenModal }) => {
   const { t } = useTranslation();
   
-  // Получаем URL для скачивания последней версии
-  const latestVersionUrl = prompt.versions && prompt.versions.length > 0 ? prompt.versions[0].downloadUrl : '#';
+  // Берем последнюю версию для главной кнопки скачивания
+  const latestVersion = prompt.versions && prompt.versions.length > 0 ? prompt.versions[0] : null;
+  const installerLink = latestVersion ? createInstallerLink(prompt, latestVersion) : '#';
 
   return (
     <div className="prompt-card">
@@ -26,7 +42,8 @@ const PromptCard = ({ prompt, characterName, onOpenModal }) => {
         <button className="btn btn-secondary" onClick={() => onOpenModal(prompt)}>
           {t('promptsPage.card.details')}
         </button>
-        <a href={latestVersionUrl} className="btn btn-primary">
+        {/* Изменяем ссылку здесь */}
+        <a href={installerLink} className="btn btn-primary">
           <DownloadIcon />
         </a>
       </div>

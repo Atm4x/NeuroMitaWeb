@@ -10,10 +10,10 @@
   },
   "lang": "EN",
   "header": {
-    "nav": {
-      "home": "Home",
-      "prompts": "Prompts"
-    }
+    "home": "Home",
+    "prompts": "Prompts",
+    "login": "Login",
+    "logout": "Logout"
   },
   "hero": {
     "title": "NeuroMita",
@@ -92,5 +92,85 @@
       "date": "Date",
       "changes": "Changes"
     }
+  },
+  "auth": {
+    "loading": "Loading...",
+    "login": {
+      "title": "Login",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "button": "Login",
+      "fail": "Login failed. Please check your credentials.",
+      "noAccount": "Don't have an account?",
+      "registerLink": "Register here"
+    },
+    "register": {
+      "title": "Register",
+      "usernameLabel": "Username",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "button": "Register",
+      "fail": "An error occurred during registration.",
+      "haveAccount": "Already have an account?",
+      "loginLink": "Login here"
+    }
+  },
+  "account": {
+    "myPrompts": "My Prompts",
+    "publishPrompt": "Publish a Prompt",
+    "adminPanel": "Admin Panel",
+    "logout": "Logout"
+  },
+  "myPrompts": {
+    "title": "My Prompts",
+    "loading": "Loading your prompts...",
+    "publishButton": "Publish New Prompt",
+    "noPrompts": "You haven't published any prompts yet.",
+    "versionsTitle": "Versions",
+    "errors": {
+      "loadFailed": "Failed to load prompts."
+    }
+  },
+  "publishPrompt": {
+    "title": "Publish New Prompt",
+    "button": "Submit for Review",
+    "labels": {
+      "title": "Title",
+      "character": "Character",
+      "promptType": "Prompt Type",
+      "description": "Short Description",
+      "extendedDescription": "Full Description",
+      "version": "Version",
+      "notes": "Version Notes (optional)",
+      "file": "Prompt File (.zip)"
+    },"types": { 
+      "fan": "Fan",
+      "lore": "Lore"
+    },
+    "explanations": {
+      "type": "<strong>Fan:</strong> A creative prompt based on your ideas. <br><strong>Lore:</strong> A prompt that strictly follows the established character canon."
+    },
+    "placeholders": {
+      "title": "e.g., Cyberpunk Adventure",
+      "description": "A brief summary for the prompt card (max 200 chars)",
+      "extendedDescription": "Detailed description for the prompt modal page.",
+      "notes": "e.g., Initial release, fixed typos...",
+      "file": "Click to select a .zip file"
+    },
+    "errors": {
+      "zipOnly": "Only .zip files are allowed.",
+      "fileRequired": "A .zip file is required.",
+      "publishFailed": "Failed to publish prompt."
+    }
+  },
+  "admin": {
+    "title": "Moderation Queue",
+    "noRequests": "No pending requests. Great job!",
+    "requester": "Requester",
+    "notes": "Notes",
+    "approve": "Approve",
+    "reject": "Reject",
+    "downloadPrompt": "Download Prompt"
+
   }
 }

@@ -1,95 +1,109 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
+import { isAuthenticated, logout, getCurrentUser } from '../api/authService';
 import HamburgerIcon from './icons/HamburgerIcon';
 import CloseIcon from './icons/CloseIcon';
 
 const Header = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // Используем useRef для хранения позиции скролла без вызова ре-рендеров
-  const scrollY = useRef(0);
+  const [currentUser, setCurrentUser] = useState(null);
+  const isAuth = !!currentUser;
+
+  const fetchUser = () => {
+    if (isAuthenticated()) {
+      getCurrentUser()
+        .then(response => setCurrentUser(response.data))
+        .catch(() => {
+          // Если токен есть, но он невалидный, разлогиниваем
+          handleLogout(false);
+        });
+    } else {
+      setCurrentUser(null);
+    }
+  };
 
   useEffect(() => {
-    if (isMenuOpen) {
-      // 1. Запоминаем текущую позицию скролла
-      scrollY.current = window.scrollY;
-      
-      // 2. Применяем стили для блокировки
-      document.body.classList.add('no-scroll');
-      document.body.style.top = `-${scrollY.current}px`;
-    } else {
-      // 3. Возвращаем все как было
-      document.body.classList.remove('no-scroll');
-      document.body.style.top = '';
-      
-      // 4. Восстанавливаем позицию скролла
-      window.scrollTo(0, scrollY.current);
-    }
-    
-    // Очистка на случай размонтирования компонента
+    const handleAuthChange = () => fetchUser();
+    window.addEventListener('authChange', handleAuthChange);
+    fetchUser(); // Первоначальная проверка при загрузке
+
     return () => {
-      document.body.classList.remove('no-scroll');
-      document.body.style.top = '';
+      window.removeEventListener('authChange', handleAuthChange);
     };
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('no-scroll', isMenuOpen);
   }, [isMenuOpen]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const changeLanguage = (lng) => i18n.changeLanguage(lng);
+
+  const handleLogout = (shouldNavigate = true) => {
+    logout();
+    setCurrentUser(null);
+    setIsMenuOpen(false);
+    if (shouldNavigate) navigate('/login');
   };
 
-  const closeMenu = () => {
-    setIsMenuOpen(false);
-  };
+  const closeMenu = () => setIsMenuOpen(false);
+
+  // Ссылки для навигации
+  const NavLinks = ({ onLinkClick }) => (
+    <>
+      <NavLink to="/" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.home')}</NavLink>
+      <NavLink to="/prompts" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.prompts')}</NavLink>
+      {isAuth ? (
+        <NavLink to="/account" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>
+          {currentUser.username}
+        </NavLink>
+      ) : (
+        <NavLink to="/login" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.login')}</NavLink>
+      )}
+    </>
+  );
+
+  const LanguageSwitcher = () => (
+    <div className="language-switcher">
+      <button onClick={() => changeLanguage('en')} className={i18n.language === 'en' ? 'active' : ''}>EN</button>
+      <span className="lang-separator">|</span>
+      <button onClick={() => changeLanguage('ru')} className={i18n.language === 'ru' ? 'active' : ''}>RU</button>
+    </div>
+  );
 
   return (
     <>
       <header className="main-header">
         <div className="container header-container">
-          <Link to="/" className="header-logo">
-            НейроМита
-          </Link>
+          <NavLink to="/" className="header-logo">Neuromita</NavLink>
           
-          <div className="desktop-nav">
-            <nav className="header-nav">
-              <NavLink to="/">{t('header.nav.home')}</NavLink>
-              <NavLink to="/prompts">{t('header.nav.prompts')}</NavLink>
-            </nav>
+          <nav className="desktop-nav">
+            <div className="header-nav">
+              <NavLinks onLinkClick={() => {}} />
+            </div>
             <LanguageSwitcher />
-          </div>
+          </nav>
 
-          <button 
-            className="hamburger-button"
-            onClick={toggleMenu}
-            aria-label="Открыть меню"
-          >
-            <HamburgerIcon />
+          <button className="hamburger-button" onClick={() => setIsMenuOpen(true)} aria-label="Open menu">
+             <HamburgerIcon />
           </button>
         </div>
       </header>
 
       <div className={`mobile-menu-overlay ${isMenuOpen ? 'open' : ''}`}>
         <div className="mobile-menu-header">
-          <Link to="/" className="header-logo" onClick={closeMenu}>
-            НейроМита
-          </Link>
-          <button 
-            className="close-menu-button" 
-            onClick={toggleMenu}
-            aria-label="Закрыть меню"
-          >
+          <NavLink to="/" className="header-logo" onClick={closeMenu}>Neuromita</NavLink>
+          <button className="close-menu-button" onClick={closeMenu} aria-label="Close menu">
             <CloseIcon />
           </button>
         </div>
-        
         <div className="mobile-menu-content">
           <nav className="mobile-nav-links">
-            <NavLink to="/" onClick={closeMenu}>{t('header.nav.home')}</NavLink>
-            <NavLink to="/prompts" onClick={closeMenu}>{t('header.nav.prompts')}</NavLink>
+            <NavLinks onLinkClick={closeMenu} />
           </nav>
         </div>
-        
         <div className="mobile-menu-footer">
           <LanguageSwitcher />
         </div>

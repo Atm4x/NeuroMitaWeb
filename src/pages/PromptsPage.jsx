@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { getPrompts } from '../api/promptsApi';
+// +++ ИСПРАВЛЕНИЕ ЗДЕСЬ: ДОБАВЛЯЕМ getPromptById В ИМПОРТ +++
+import { getPublicPrompts, getPromptById } from '../api/promptService';
 import PromptCard from '../components/PromptCard';
 import PromptModal from '../components/PromptModal';
 import '../styles/PromptsPage.css';
@@ -13,37 +14,49 @@ const PromptsPage = () => {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPrompt, setSelectedPrompt] = useState(null);
+  const [detailedPrompt, setDetailedPrompt] = useState(null);
 
   const characters = t('promptsPage.characters', { returnObjects: true });
 
   useEffect(() => {
     const fetchPrompts = async () => {
       setIsLoading(true);
-      const data = await getPrompts();
-      setPrompts(data);
+      try {
+        const response = await getPublicPrompts(1, 20, activeTab);
+        setPrompts(response.data);
+      } catch (error) {
+        console.error("Failed to fetch prompts:", error);
+        setPrompts([]);
+      }
       setIsLoading(false);
     };
     fetchPrompts();
-  }, []);
+  }, [activeTab]);
 
-  const handleOpenModal = (prompt) => {
-    setSelectedPrompt(prompt);
+  const handleOpenModal = async (promptFromCard) => {
+    setSelectedPrompt(promptFromCard);
     setIsModalOpen(true);
+    setDetailedPrompt(null);
+    try {
+        const response = await getPromptById(promptFromCard.id);
+        setDetailedPrompt(response.data);
+    } catch (error) {
+        console.error("Failed to fetch prompt details:", error);
+    }
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedPrompt(null);
+    setDetailedPrompt(null);
   };
-
-  const filteredPrompts = activeTab === 'all'
-    ? prompts
-    : prompts.filter(p => p.characterId === activeTab);
     
   const getCharacterNameById = (id) => {
     const character = characters.find(c => c.id === id);
     return character ? character.name : 'Unknown';
   };
+
+  const filteredPrompts = prompts;
 
   return (
     <>
@@ -52,7 +65,6 @@ const PromptsPage = () => {
           <h1 className="page-title">{t('promptsPage.title')}</h1>
           
           <div className="tabs-container">
-            {/* ...Кнопки вкладок без изменений... */}
              <button 
                 className={`tab-button ${activeTab === 'all' ? 'active' : ''}`}
                 onClick={() => setActiveTab('all')}
@@ -74,14 +86,14 @@ const PromptsPage = () => {
             <div className="loading-indicator">{t('promptsPage.loading')}</div>
           ) : (
             <div className="prompts-grid">
-              {filteredPrompts.map(prompt => (
+              {filteredPrompts.length > 0 ? filteredPrompts.map(prompt => (
                 <PromptCard 
                   key={prompt.id} 
                   prompt={prompt}
-                  characterName={getCharacterNameById(prompt.characterId)}
+                  characterName={getCharacterNameById(prompt.character_id)}
                   onOpenModal={handleOpenModal}
                 />
-              ))}
+              )) : <p>No prompts found for this character.</p>}
             </div>
           )}
         </div>
@@ -89,8 +101,8 @@ const PromptsPage = () => {
       <PromptModal 
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        prompt={selectedPrompt}
-        characterName={selectedPrompt ? getCharacterNameById(selectedPrompt.characterId) : ''}
+        prompt={detailedPrompt || selectedPrompt}
+        characterName={selectedPrompt ? getCharacterNameById(selectedPrompt.character_id || selectedPrompt.characterId) : ''}
       />
     </>
   );

@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+public/models/*
+backend/keys/*
+backend/.env
+__pycache__
+neuromita.db
+venv
+package-lock.json
