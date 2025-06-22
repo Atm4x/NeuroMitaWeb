@@ -1,7 +1,6 @@
 /* ======================================================= */
 /* ====== СТИЛИ ДЛЯ СТРАНИЦ АВТОРИЗАЦИИ ====== */
 /* ======================================================= */
-
 .auth-container {
     max-width: 450px;
     margin: 0 auto;
@@ -43,9 +42,12 @@
     box-shadow: 0 0 10px var(--accent-glow);
 }
 
-.form-input::placeholder,
-.form-textarea::placeholder {
-    color: var(--text-secondary);
+.form-input:disabled,
+.form-textarea:disabled,
+.form-select:disabled {
+    background-color: var(--bg-hover);
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .form-textarea {
@@ -85,23 +87,136 @@
 }
 
 /* ======================================================= */
-/* ====== СТИЛИ ДЛЯ СТРАНИЦЫ "МОИ ПРОМПТЫ" ====== */
+/* ====== НОВЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ АККАУНТА ====== */
 /* ======================================================= */
 
-.myprompts-header {
+.account-page-wrapper {
+    padding-top: 70px;
+}
+
+.account-banner {
+    background-color: #222;
+    background-size: cover;
+    background-position: center;
+    height: 250px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 20px;
+    position: relative;
+}
+
+.account-banner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(14, 14, 14, 1) 0%, rgba(14, 14, 14, 0.8) 25%, rgba(14, 14, 14, 0) 60%);
+}
+
+.account-user-info {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    position: relative;
+    z-index: 2;
+}
+
+.account-avatar-banner {
+    width: 128px;
+    height: 128px;
+    border-radius: 16px;
+    border: 4px solid var(--bg-main);
+    object-fit: cover;
+}
+
+.account-user-text h1 {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin: 0;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.account-user-text p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.account-nav-horizontal {
+    background-color: var(--bg-darker);
+    border-bottom: 1px solid var(--border);
+}
+
+.account-nav-horizontal .container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.account-nav-horizontal button {
+    background: none;
+    border: none;
+    padding: 15px 20px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.account-nav-horizontal button:hover {
+    color: var(--text-primary);
+}
+
+.account-nav-horizontal button.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.account-nav-horizontal .admin-link {
+    color: var(--accent);
+}
+
+.account-nav-horizontal .admin-link:hover {
+    color: var(--accent-hover);
+}
+
+.account-nav-horizontal .logout-button {
+    margin-left: auto;
+    color: var(--text-secondary);
+}
+
+.account-nav-horizontal .logout-button:hover {
+    color: var(--accent);
+}
+
+.account-content-area {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 60px;
+}
+
+.account-content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.myprompts-header .page-title {
-    margin-bottom: 0;
-    text-align: left;
+.account-content-header h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-primary);
+    margin: 0;
 }
 
+/* --- Список промптов пользователя --- */
 .prompt-list-user {
     display: flex;
     flex-direction: column;
@@ -112,289 +227,162 @@
     background-color: var(--bg-card);
     border: 1px solid var(--border);
     padding: 25px;
-    transition: all 0.2s ease;
-}
-
-.myprompts-item:hover {
-    border-color: var(--accent);
 }
 
 .myprompts-item-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: 15px;
     padding-bottom: 15px;
     margin-bottom: 15px;
     border-bottom: 1px solid var(--border);
 }
 
-.myprompts-item-header h2 {
+.myprompts-item-header h3 {
     font-size: 1.5rem;
     color: var(--text-primary);
     margin: 0;
 }
 
-.status-badge {
-    padding: 5px 15px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: var(--bg-main);
+.btn-small {
+    padding: 8px 16px;
+    font-size: 0.9rem;
     white-space: nowrap;
 }
 
-/* ИСПРАВЛЕННЫЕ И ДОПОЛНЕННЫЕ СТАТУСЫ */
-.status-pending {
-    background-color: #f39c12; /* Orange */
-}
-.status-approved {
-    background-color: #2ecc71; /* Green */
-}
-.status-rejected {
-    background-color: #e74c3c; /* Red */
-}
-
-
-.myprompts-item-body p {
+.myprompts-item-description {
     color: var(--text-secondary);
     margin-bottom: 20px;
 }
 
-.myprompts-item-body h3 {
+.myprompts-item-body h4 {
     color: var(--accent);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 1.1rem;
 }
 
+/* --- Таймлайн Версий --- */
 .versions-list-user {
     list-style: none;
-    padding-left: 20px;
-    border-left: 2px solid var(--border);
+    padding: 0;
+    position: relative;
+}
+
+.versions-list-user::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient( to bottom, transparent 0%, #444444 15%, #444444 85%, transparent 100% );
 }
 
 .version-item-user {
     position: relative;
-    padding: 10px 0;
+    padding: 8px 0px 8px 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .version-item-user::before {
     content: '';
     position: absolute;
-    left: -27px;
-    top: 20px;
+    left: 1px;
+    top: 50%;
+    transform: translateY(-50%);
     width: 10px;
     height: 10px;
-    background-color: var(--border);
     border-radius: 50%;
+    background-color: #444444;
+    border: 2px solid var(--bg-card);
+    z-index: 1;
 }
 
-.version-item-user:first-child::before {
-    background-color: var(--accent);
-}
+.version-item-user.status-item-approved::before { background-color: #2ecc71; }
+.version-item-user.status-item-pending::before { background-color: #f39c12; }
+.version-item-user.status-item-rejected::before { background-color: #e74c3c; }
 
-/* ======================================================= */
-/* ====== СТИЛИ ДЛЯ СТРАНИЦЫ ПУБЛИКАЦИИ ====== */
-/* ======================================================= */
-
-.publish-form-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-}
-
-/* Custom file input */
-.file-input-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.file-input-hidden {
-    opacity: 0;
-    position: absolute;
-    z-index: -1;
-    width: 0.1px;
-    height: 0.1px;
-}
-
-.file-input-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 12px 15px;
-    background-color: var(--bg-main);
-    border: 1px dashed var(--border);
-    color: var(--text-secondary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.file-input-label:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-
-/* ======================================================= */
-/* +++ НОВЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ АККАУНТА +++ */
-/* ======================================================= */
-
-.account-container {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 40px;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border);
-}
-
-.account-header {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    padding-bottom: 30px;
-    margin-bottom: 30px;
-    border-bottom: 1px solid var(--border);
-}
-
-.account-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid var(--border);
-}
-
-.account-username {
-    font-size: 2.5rem;
-    color: var(--text-primary);
-    margin: 0;
-}
-
-.account-email {
-    font-size: 1.1rem;
-    color: var(--text-secondary);
-}
-
-.account-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 40px;
-}
-
-.account-nav-link {
-    display: block;
-    padding: 15px 20px;
-    background-color: var(--bg-main);
-    border: 1px solid var(--border);
-    color: var(--text-primary);
-    text-decoration: none;
+.status-text {
     font-weight: 600;
-    transition: all 0.2s ease;
+    text-transform: capitalize;
 }
 
-.account-nav-link:hover {
-    background-color: var(--bg-hover);
-    border-color: var(--accent);
-    color: var(--accent);
+.status-text.status-approved { color: #2ecc71; }
+.status-text.status-pending { color: #f39c12; }
+.status-text.status-rejected { color: #e74c3c; }
+
+.version-separator {
+    color: var(--text-secondary);
 }
 
-.account-nav-link.admin-link {
-    border-color: var(--accent);
-    color: var(--accent);
-}
-.account-nav-link.admin-link:hover {
-    background-color: var(--accent);
-    color: var(--bg-main);
+.no-prompts-container {
+    text-align: center;
+    padding: 80px 40px;
+    background-color: var(--bg-card);
+    border: 1px dashed var(--border);
 }
 
-.account-actions {
-    display: flex;
-    justify-content: flex-end;
+.no-prompts-container p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
 }
 
-/* ======================================================= */
-/* +++ НОВЫЕ СТИЛИ ДЛЯ СТРАНИЦЫ МОДЕРАЦИИ +++ */
-/* ======================================================= */
-
-.moderation-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.moderation-item {
+/* --- Форма публикации --- */
+.publish-form-container {
+    padding: 40px;
     background-color: var(--bg-card);
     border: 1px solid var(--border);
-    padding: 25px;
 }
 
-.moderation-item-header {
+.publish-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.publish-form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
     border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 10px;
 }
 
-.moderation-item-header h3 {
-    font-size: 1.4rem;
-    color: var(--accent);
+.publish-form-header h3 {
     margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
 }
 
-.moderation-item-date {
-    font-size: 0.9rem;
+.form-row {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.form-row-label {
+    padding-top: 12px;
+    text-align: right;
+    font-weight: 600;
     color: var(--text-secondary);
+    font-size: 0.95rem;
 }
 
-.moderation-item-body p {
-    color: var(--text-secondary);
-    margin-bottom: 10px;
+.form-row-control {
+    width: 100%;
 }
-.moderation-item-body p strong {
-    color: var(--text-primary);
-}
-
-.moderation-item-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 25px;
-}
-
-.btn-approve {
-    border-color: #2ecc71;
-    color: #2ecc71;
-}
-.btn-approve:hover {
-    background-color: #2ecc71;
-    color: var(--bg-main);
-}
-.btn-approve::before {
-    background: #2ecc71;
-}
-
-.btn-reject {
-    border-color: #e74c3c;
-    color: #e74c3c;
-}
-.btn-reject:hover {
-    background-color: #e74c3c;
-    color: var(--bg-main);
-}
-.btn-reject::before {
-    background: #e74c3c;
-}
-
 
 .toggle-switch-container {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-top: 10px;
+    height: 48px;
 }
 
 .toggle-switch-container span {
@@ -440,15 +428,169 @@
     transform: translateX(29px);
 }
 
-.form-explanation {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    margin-top: 15px;
-    padding: 10px 15px;
-    background-color: var(--bg-main);
-    border-left: 3px solid var(--border);
+.form-divider {
+    border: none;
+    height: 1px;
+    background-color: var(--border);
+    margin: 20px 0;
 }
 
-.form-explanation strong {
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.file-input-hidden {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+}
+
+.file-input-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px 15px;
+    background-color: var(--bg-main);
+    border: 1px dashed var(--border);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.file-input-label:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* --- Стили для страницы модерации --- */
+.moderation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.moderation-item {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 25px;
+}
+.moderation-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.moderation-item-header h3 {
+    font-size: 1.4rem;
+    color: var(--accent);
+    margin: 0;
+}
+.moderation-item-date {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+.moderation-item-body p {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+.moderation-item-body p strong {
     color: var(--text-primary);
+}
+.moderation-item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+}
+.btn-approve {
+    border-color: #2ecc71;
+    color: #2ecc71;
+}
+.btn-approve:hover {
+    background-color: #2ecc71;
+    color: var(--bg-main);
+}
+.btn-approve::before {
+    background: #2ecc71;
+}
+.btn-reject {
+    border-color: #e74c3c;
+    color: #e74c3c;
+}
+.btn-reject:hover {
+    background-color: #e74c3c;
+    color: var(--bg-main);
+}
+.btn-reject::before {
+    background: #e74c3c;
+}
+
+/* ======================================================= */
+/* ====== АДАПТИВНОСТЬ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ====== */
+/* ======================================================= */
+@media (max-width: 768px) {
+    .account-banner {
+        height: auto;
+        padding-top: 30px;
+        padding-bottom: 20px;
+    }
+    .account-user-info {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 15px;
+    }
+    .account-avatar-banner {
+        width: 100px;
+        height: 100px;
+    }
+    .account-user-text h1 {
+        font-size: 2rem;
+    }
+    .account-nav-horizontal .container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+    }
+    .account-nav-horizontal .container::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Opera */
+    }
+    .account-content-area {
+        margin-top: 30px;
+    }
+    .account-content-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .account-content-header h2 {
+        text-align: center;
+    }
+    .publish-form-container {
+        padding: 20px;
+    }
+    .publish-form-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    .form-row-label {
+        text-align: left;
+        padding-top: 0;
+    }
+    .toggle-switch-container {
+        height: auto;
+        padding: 5px 0;
+    }
 }

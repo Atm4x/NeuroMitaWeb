@@ -1,7 +1,9 @@
 import uuid
-import shutil
 from pathlib import Path
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query
+import zipfile
+import io
+import tiktoken
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query, Response
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 from typing import List
@@ -16,10 +18,94 @@ router = APIRouter()
 
 MEDIA_ROOT = Path("media/prompts")
 MEDIA_ROOT.mkdir(parents=True, exist_ok=True)
+MAX_ZIP_SIZE = 5 * 1024 * 1024  # 5 MB
+MAX_UNCOMPRESSED_SIZE = 10 * 1024 * 1024 # 10 MB, защита от zip-бомб
+ALLOWED_EXTENSIONS = {".txt", ".script", ".postscript"}
 
+# Инициализируем кодировщик токенов
+try:
+    encoding = tiktoken.get_encoding("cl100k_base")
+except Exception:
+    encoding = None
+
+async def process_and_validate_zip(file: UploadFile) -> (int, bytes):
+    """
+    Безопасно валидирует ZIP-файл, подсчитывает токены из разрешенных файлов
+    и возвращает количество токенов и содержимое файла.
+    """
+    # 1. Проверяем общий размер файла перед чтением в память
+    contents = await file.read()
+    if len(contents) > MAX_ZIP_SIZE:
+        raise HTTPException(
+            status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
+            detail=f"Размер ZIP-файла не должен превышать {MAX_ZIP_SIZE / 1024 / 1024} МБ."
+        )
+
+    # 2. Подготовка к обработке
+    total_uncompressed_size = 0
+    all_text_content = []
+    
+    if not encoding:
+         raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Кодировщик токенов недоступен."
+        )
+
+    try:
+        with zipfile.ZipFile(io.BytesIO(contents)) as zf:
+            # Предварительная проверка на zip-бомбу по сумме размеров
+            uncompressed_sum = sum(info.file_size for info in zf.infolist())
+            if uncompressed_sum > MAX_UNCOMPRESSED_SIZE:
+                 raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"Распакованный размер архива превышает лимит в {MAX_UNCOMPRESSED_SIZE / 1024 / 1024} МБ."
+                )
+
+            for member in zf.infolist():
+                # Безопасность: предотвращаем атаки path traversal
+                if ".." in member.filename or member.filename.startswith(("/", "\\")):
+                    continue
+
+                # Игнорируем директории
+                if member.is_dir():
+                    continue
+
+                # Проверяем расширение файла
+                file_ext = Path(member.filename).suffix.lower()
+                if file_ext not in ALLOWED_EXTENSIONS:
+                    continue
+
+                # Безопасность: итеративно проверяем размер (защита от zip-бомб)
+                total_uncompressed_size += member.file_size
+                if total_uncompressed_size > MAX_UNCOMPRESSED_SIZE:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Распакованный размер архива превышает лимит в {MAX_UNCOMPRESSED_SIZE / 1024 / 1024} МБ."
+                    )
+
+                # Читаем и декодируем содержимое
+                try:
+                    with zf.open(member) as member_file:
+                        file_content = member_file.read()
+                        all_text_content.append(file_content.decode('utf-8', errors='ignore'))
+                except Exception:
+                    # Игнорируем поврежденные или защищенные паролем файлы
+                    continue
+
+    except zipfile.BadZipFile:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Неверный или поврежденный ZIP-файл.")
+    
+    # 3. Подсчитываем токены
+    if not all_text_content:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Архив должен содержать хотя бы один файл с расширением: {', '.join(ALLOWED_EXTENSIONS)}")
+
+    full_text = "\n\n".join(all_text_content)
+    num_tokens = len(encoding.encode(full_text))
+
+    return num_tokens, contents
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=prompt_schemas.Prompt)
-def create_prompt(
+async def create_prompt(
     *,
     db: Session = Depends(deps.get_db),
     current_user: user_models.User = Depends(deps.get_current_user),
@@ -30,25 +116,31 @@ def create_prompt(
     extended_description: str = Form(...),
     version_str: str = Form(...),
     notes: str = Form(...),
-    tokens: int = Form(...),
     file: UploadFile = File(...)
 ):
     if not file.filename.endswith('.zip'):
-        raise HTTPException(status_code=400, detail="Only .zip files are supported.")
+        raise HTTPException(status_code=400, detail="Поддерживаются только .zip файлы.")
+
+    try:
+        calculated_tokens, file_contents = await process_and_validate_zip(file)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка при обработке файла: {e}")
 
     if crud_prompt.get_prompt_by_title_and_character(db, title=title, character_id=character_id):
-        raise HTTPException(status_code=400, detail="A prompt with this title for this character already exists.")
+        raise HTTPException(status_code=400, detail="Промпт с таким названием для этого персонажа уже существует.")
 
     file_name = f"{uuid.uuid4()}.zip"
     file_path = MEDIA_ROOT / file_name
     with file_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        buffer.write(file_contents)
 
     prompt_in = prompt_schemas.PromptCreate(
         title=title, character_id=character_id, type=type,
         description=description, extended_description=extended_description
     )
-    version_in = prompt_schemas.PromptVersionCreate(version_str=version_str, notes=notes, tokens=tokens)
+    version_in = prompt_schemas.PromptVersionCreate(version_str=version_str, notes=notes, tokens=calculated_tokens)
     
     db_prompt = crud_prompt.create_prompt_with_version(
         db, prompt=prompt_in, version=version_in, user_id=current_user.id, file_path=str(file_path)
@@ -56,35 +148,41 @@ def create_prompt(
     return db_prompt
 
 @router.post("/{prompt_id}/versions", status_code=status.HTTP_201_CREATED, response_model=prompt_schemas.PromptVersion)
-def create_new_version(
+async def create_new_version(
     prompt_id: int,
     *,
     db: Session = Depends(deps.get_db),
     current_user: user_models.User = Depends(deps.get_current_user),
     version_str: str = Form(...),
     notes: str = Form(...),
-    tokens: int = Form(...),
     file: UploadFile = File(...)
 ):
     if not file.filename.endswith('.zip'):
-        raise HTTPException(status_code=400, detail="Only .zip files are supported.")
+        raise HTTPException(status_code=400, detail="Поддерживаются только .zip файлы.")
 
     db_prompt = crud_prompt.get_prompt(db, prompt_id=prompt_id)
     if not db_prompt:
-        raise HTTPException(status_code=404, detail="Prompt not found.")
+        raise HTTPException(status_code=404, detail="Промпт не найден.")
     
     if db_prompt.creator_id != current_user.id:
-        raise HTTPException(status_code=403, detail="Not authorized to update this prompt.")
+        raise HTTPException(status_code=403, detail="Недостаточно прав для обновления этого промпта.")
 
     if any(v.version_str == version_str for v in db_prompt.versions):
-        raise HTTPException(status_code=400, detail="This version already exists for this prompt.")
+        raise HTTPException(status_code=400, detail="Эта версия для данного промпта уже существует.")
+
+    try:
+        calculated_tokens, file_contents = await process_and_validate_zip(file)
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Произошла ошибка при обработке файла: {e}")
 
     file_name = f"{uuid.uuid4()}.zip"
     file_path = MEDIA_ROOT / file_name
     with file_path.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+        buffer.write(file_contents)
 
-    version_in = prompt_schemas.PromptVersionCreate(version_str=version_str, notes=notes, tokens=tokens)
+    version_in = prompt_schemas.PromptVersionCreate(version_str=version_str, notes=notes, tokens=calculated_tokens)
     
     db_version = crud_prompt.create_prompt_version(
         db, prompt=db_prompt, version=version_in, user_id=current_user.id, file_path=str(file_path)

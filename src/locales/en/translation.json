@@ -116,10 +116,20 @@
     }
   },
   "account": {
-    "myPrompts": "My Prompts",
-    "publishPrompt": "Publish a Prompt",
     "adminPanel": "Admin Panel",
-    "logout": "Logout"
+    "logout": "Logout",
+    "tabs": {
+      "prompts": "Prompts",
+      "settings": "Settings"
+    },
+    "myPrompts": "My Prompts",
+    "publishPrompt": "Publish Prompt",
+    "updatePromptTitle": "New version for",
+    "publishNewPromptTitle": "Publish New Prompt",
+    "addNewVersion": "Add new version",
+    "cancelUpdate": "Cancel",
+    "submitUpdate": "Submit New Version",
+    "backToList": "Back to List"
   },
   "myPrompts": {
     "title": "My Prompts",
@@ -143,7 +153,7 @@
       "version": "Version",
       "notes": "Version Notes (optional)",
       "file": "Prompt File (.zip)"
-    },"types": { 
+    },"types": {
       "fan": "Fan",
       "lore": "Lore"
     },
@@ -171,6 +181,5 @@
     "approve": "Approve",
     "reject": "Reject",
     "downloadPrompt": "Download Prompt"
-
   }
 }

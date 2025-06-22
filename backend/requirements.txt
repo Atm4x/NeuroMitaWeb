@@ -8,3 +8,4 @@ slowapi
 pycryptodome
 python-dotenv
 cryptography
+tiktoken

@@ -36,11 +36,11 @@ export const getUserPrompts = () => {
 };
 
 /**
- * Публикует новый промпт или новую версию.
+ * Публикует совершенно новый промпт.
  * @param {FormData} formData - Данные формы, включая .zip файл.
  * @returns {Promise<any>}
  */
-export const publishPrompt = (formData) => {
+export const publishNewPrompt = (formData) => {
   return api.post('/prompts', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
@@ -48,4 +48,23 @@ export const publishPrompt = (formData) => {
   });
 };
 
-// Сюда же можно добавить функции для обновления промпта, создания новой версии и т.д.
+/**
+ * Публикует новую версию для существующего промпта.
+ * @param {number} promptId - ID существующего промпта.
+ * @param {FormData} formData - Данные формы с информацией о новой версии.
+ * @returns {Promise<any>}
+ */
+export const publishNewVersion = (promptId, formData) => {
+  // Удаляем поля, которые не нужны для создания версии, чтобы избежать потенциальных ошибок валидации
+  formData.delete('title');
+  formData.delete('character_id');
+  formData.delete('type');
+  formData.delete('description');
+  formData.delete('extended_description');
+
+  return api.post(`/prompts/${promptId}/versions`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};

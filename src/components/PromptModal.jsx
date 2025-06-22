@@ -53,7 +53,7 @@ const PromptModal = ({ isOpen, onClose, prompt, characterName }) => {
   const displayData = prompt.creator?.username ? prompt : null;
   const baseData = prompt; // Данные с карточки всегда есть
 
-  const latestVersion = displayData?.versions?.[0] || { tokens: baseData.tokens };
+  const latestVersion = displayData?.versions?.at(-1) || { tokens: baseData.tokens };
 
   return (
     <div className="prompt-modal-overlay" onClick={onClose}>
@@ -94,7 +94,7 @@ const PromptModal = ({ isOpen, onClose, prompt, characterName }) => {
               <ul className="versions-list">
                 {/* Рендерим только если детальные данные загружены */}
                 {displayData && Array.isArray(displayData.versions) ? (
-                  displayData.versions.map((version) => (
+                  displayData.versions.toReversed().map((version) => (
                     // Используем `version.id` как ключ, он должен быть уникальным
                     <li key={version.id} className="version-item">
                       <div className="version-info">

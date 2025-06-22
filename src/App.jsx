@@ -5,8 +5,7 @@ import HomePage from './pages/HomePage';
 import PromptsPage from './pages/PromptsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-import MyPromptsPage from './pages/MyPromptsPage';
-import PublishPromptPage from './pages/PublishPromptPage';
+// import PublishPromptPage from './pages/PublishPromptPage';
 import AccountPage from './pages/AccountPage'; // +++
 import AdminModerationPage from './pages/AdminModerationPage'; // +++
 
@@ -19,8 +18,6 @@ function App() {
         <Route path="/prompts" element={<PromptsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/my-prompts" element={<MyPromptsPage />} />
-        <Route path="/publish-prompt" element={<PublishPromptPage />} />
         <Route path="/account" element={<AccountPage />} /> {/* +++ */}
         <Route path="/admin/moderation" element={<AdminModerationPage />} /> {/* +++ */}
       </Routes>

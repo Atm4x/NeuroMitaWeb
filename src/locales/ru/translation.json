@@ -116,10 +116,20 @@
     }
   },
   "account": {
+    "adminPanel": "Панель администратора",
+    "logout": "Выйти",
+    "tabs": {
+      "prompts": "Промпты",
+      "settings": "Настройки"
+    },
     "myPrompts": "Мои промпты",
     "publishPrompt": "Опубликовать промпт",
-    "adminPanel": "Панель администратора",
-    "logout": "Выйти"
+    "updatePromptTitle": "Новая версия для",
+    "publishNewPromptTitle": "Публикация нового промпта",
+    "addNewVersion": "Добавить новую версию",
+    "cancelUpdate": "Отмена",
+    "submitUpdate": "Отправить новую версию",
+    "backToList": "Назад к списку"
   },
   "myPrompts": {
     "title": "Мои промпты",

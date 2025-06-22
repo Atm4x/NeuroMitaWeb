@@ -33,7 +33,7 @@ const PromptCard = ({ prompt, characterName, onOpenModal }) => {
       
       <div className="prompt-meta">
         <span>{t('promptsPage.card.creator')}: <strong>{prompt.creator}</strong></span>
-        <span className="prompt-last-updated">{t('promptsPage.card.lastUpdated')}: {new Date(prompt.lastUpdated).toLocaleDateString()}</span>
+        <span className="prompt-last-updated">{t('promptsPage.card.lastUpdated')}: {new Date(prompt.last_updated).toLocaleDateString()}</span>
       </div>
 
       <p className="prompt-description">{prompt.description}</p>

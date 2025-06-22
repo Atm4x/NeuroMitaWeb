@@ -21,7 +21,7 @@ const LoginPage = () => {
       const success = await login(email, password);
       if (success) {
         window.dispatchEvent(new Event("authChange"));
-        navigate('/my-prompts');
+        navigate('/account');
       }
     } catch (err) {
       const serverError = err.response?.data?.detail;
