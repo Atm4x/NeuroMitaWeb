@@ -11,6 +11,7 @@
   "lang": "RU",
   "header": {
     "home": "Главная",
+    "downloads": "Файлы",
     "prompts": "Промпты",
     "login": "Вход",
     "logout": "Выход"

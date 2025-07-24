@@ -30,3 +30,4 @@ neuromita.db
 venv
 package-lock.json
 media/*
+public/assets/*

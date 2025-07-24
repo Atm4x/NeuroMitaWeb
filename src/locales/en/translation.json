@@ -11,6 +11,7 @@
   "lang": "EN",
   "header": {
     "home": "Home",
+    "downloads": "Downloads",
     "prompts": "Prompts",
     "login": "Login",
     "logout": "Logout"

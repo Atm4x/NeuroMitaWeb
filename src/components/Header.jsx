@@ -17,7 +17,6 @@ const Header = () => {
       getCurrentUser()
         .then(response => setCurrentUser(response.data))
         .catch(() => {
-          // Если токен есть, но он невалидный, разлогиниваем
           handleLogout(false);
         });
     } else {
@@ -28,7 +27,7 @@ const Header = () => {
   useEffect(() => {
     const handleAuthChange = () => fetchUser();
     window.addEventListener('authChange', handleAuthChange);
-    fetchUser(); // Первоначальная проверка при загрузке
+    fetchUser();
 
     return () => {
       window.removeEventListener('authChange', handleAuthChange);
@@ -50,11 +49,11 @@ const Header = () => {
 
   const closeMenu = () => setIsMenuOpen(false);
 
-  // Ссылки для навигации
   const NavLinks = ({ onLinkClick }) => (
     <>
       <NavLink to="/" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.home')}</NavLink>
       <NavLink to="/prompts" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.prompts')}</NavLink>
+      <NavLink to="/downloads" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>{t('header.downloads', 'Downloads')}</NavLink>
       {isAuth ? (
         <NavLink to="/account" onClick={onLinkClick} className={({ isActive }) => isActive ? 'active' : ''}>
           {currentUser.username}

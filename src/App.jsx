@@ -5,9 +5,9 @@ import HomePage from './pages/HomePage';
 import PromptsPage from './pages/PromptsPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
-// import PublishPromptPage from './pages/PublishPromptPage';
-import AccountPage from './pages/AccountPage'; // +++
-import AdminModerationPage from './pages/AdminModerationPage'; // +++
+import AccountPage from './pages/AccountPage';
+import AdminModerationPage from './pages/AdminModerationPage';
+import DownloadsPage from './pages/DownloadsPage';
 
 function App() {
   return (
@@ -16,10 +16,11 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/prompts" element={<PromptsPage />} />
+        <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/account" element={<AccountPage />} /> {/* +++ */}
-        <Route path="/admin/moderation" element={<AdminModerationPage />} /> {/* +++ */}
+        <Route path="/account" element={<AccountPage />} />
+        <Route path="/admin/moderation" element={<AdminModerationPage />} />
       </Routes>
     </>
   );
